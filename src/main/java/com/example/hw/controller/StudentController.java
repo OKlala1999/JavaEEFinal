@@ -55,7 +55,6 @@ public class StudentController {
         if(result.isPresent()){
             s = result.get();
         }
-
         if (s.getId() == Integer.valueOf(id) && s.getPassword().equals(password)) {
             req.getSession().setAttribute("login", "1");
             List<Homework> list = homeworkService.findAll();
@@ -94,10 +93,17 @@ public class StudentController {
         String password = req.getParameter("password");
         String name=req.getParameter("name");
         System.out.println(id + password);
-        Student s=new Student(Integer.valueOf(id),name,password);
-        studentService.addStudent(s);
-        req.setAttribute("message", "注册成功");
-        req.getRequestDispatcher("/sregister.jsp").forward(req, resp);
+        Optional<Student> result=studentService.findById(Integer.valueOf(id));
+        if(result.isPresent()){
+            req.setAttribute("message", "当前账号已存在，请重新注册");
+            req.getRequestDispatcher("/sregister.jsp").forward(req, resp);
+        }else {
+            Student s=new Student(Integer.valueOf(id),name,password);
+            studentService.addStudent(s);
+            req.setAttribute("message", "注册成功");
+            req.getRequestDispatcher("/sregister.jsp").forward(req, resp);
+        }
+
     }
 
     @RequestMapping("submitPage")//跳转到学生提交作业页面

@@ -15,6 +15,7 @@
         <td>作业标题</td>
         <td>回答内容</td>
         <td>提交时间</td>
+        <td>更新时间</td>
     </tr>
 
     <c:forEach items="${shList}" var="hw">
@@ -22,7 +23,8 @@
             <td>${hw.studentId}</td>
             <td>${hw.homeworkTitle}</td>
             <td>${hw.homeworkContent}</td>
-            <td>${hw.submitTime}AAAAAAA</td>
+            <td>${hw.submitTime}</td>
+            <td>${hw.updateTime}</td>
         </tr>
     </c:forEach>
 </table>

@@ -75,10 +75,17 @@ public class TeacherController {
         String password = req.getParameter("password");
         String name=req.getParameter("name");
         System.out.println(id + password);
-        Teacher t=new Teacher(Integer.valueOf(id),name,password);
-        teacherService.addTeacher(t);
-        req.setAttribute("message", "注册成功");
-        req.getRequestDispatcher("/tregister.jsp").forward(req, resp);
+
+        Optional<Teacher> result=teacherService.findById(Integer.valueOf(id));
+        if(result.isPresent()){
+            req.setAttribute("message", "当前账号已存在，请重新注册");
+            req.getRequestDispatcher("/tregister.jsp").forward(req, resp);
+        }else {
+            Teacher t=new Teacher(Integer.valueOf(id),name,password);
+            teacherService.addTeacher(t);
+            req.setAttribute("message", "注册成功");
+            req.getRequestDispatcher("/tregister.jsp").forward(req, resp);
+        }
     }
 
     @RequestMapping("addStudentPage")//跳转到添加学生界面接口
